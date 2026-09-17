@@ -1,0 +1,68 @@
+# Ascending Guangming Summit — manual playthrough confirmed by Sheng.
+# Three-tile rises and broad staggered platforms use the base double jump.
+@parallax-layer bg3
+@music map3_music
+C                D
+C                D
+C                D
+C                D
+C                D
+C                D
+C                D
+C                D
+C  v      h      D
+CBBBBBBBBBBBB    D
+C              2 D
+C            g   D
+C           III  D
+C                D
+C       g        D
+C      III       D
+C                D
+C  g             D
+C III            D
+C                D
+C       s1       D
+C      III       D
+C              2 D
+C  o             D
+C III            D
+C                D
+C       g        D
+C      III       D
+C                D
+C           bs1  D
+C           III  D
+C                D
+C       o        D
+C      III       D
+C              2 D
+C  g             D
+C III            D
+C                D
+C       s1       D
+C      III       D
+C                D
+C           vo   D
+C           III  D
+C                D
+C       g        D
+C      III       D
+C                D
+C  s1            D
+C III            D
+C                D
+C       o        D
+C      III       D
+C                D
+C           bg   D
+C           III  D
+C                D
+C       s        D
+C      III       D
+C                D
+C  o             D
+C III            D
+C  0             D
+C t   b o        D
+ABBBBBBBBBBBBBBBBA

@@ -1,0 +1,13 @@
+# The Valley -- a horizontal trek between the cliff and the summit.
+# 100 columns x 9 rows; five ground plateaus split by widening pits (2/3/4/4/4 tiles).
+@parallax-layer bg2
+@music map2_music
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                              b                                     
+                                                            IIIII               g                   
+                                                                              IIII                  
+  0                 o   1  o         s  2   g  o         1          o               1 2 v        *  
+IIIIIIIIIIIIIII  IIIIIIIIIIIIII   IIIIIIIIIIIIIIIII    IIIIIIIIIIIIIIII    IIIIIIIIIIIIIIII    IIIII

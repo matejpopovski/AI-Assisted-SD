@@ -1,0 +1,68 @@
+# Descending Cliff — manual playthrough confirmed by Sheng.
+# 18 columns x 64 rows; alternating catch ledges every five rows.
+@parallax-layer bg1
+@music map1_music
+C                D
+C                D
+C  0             D
+C     b o        D
+CIIIIIIIIIIIII   D
+C                D
+C                D
+C                D
+C        1 s v   D
+C   IIIIIIIIIIIIID
+C                D
+C                D
+C 2              D
+C      b         D
+CIIIIIIIIIIIII   D
+C                D
+C                D
+C                D
+C       o        D
+C   IIIIIIIIIIIIID
+C                D
+C                D
+C                D
+C        1 s     D
+CIIIIIIIIIIIII   D
+C                D
+C                D
+C                D
+C      v         D
+C   IIIIIIIIIIIIID
+C                D
+C                D
+C 2              D
+C       o        D
+CIIIIIIIIIIIII   D
+C                D
+C                D
+C                D
+C        1 s     D
+C   IIIIIIIIIIIIID
+C                D
+C                D
+C                D
+C      b         D
+CIIIIIIIIIIIII   D
+C                D
+C                D
+C    2           D
+C       o        D
+C   IIIIIIIIIIIIID
+C                D
+C                D
+C                D
+C        1 s     D
+CIIIIIIIIIIIII   D
+C                D
+C                D
+C                D
+C      v         D
+C   IIIIIIIIIIIIID
+C                D
+C                D
+C     g  *       D
+ABBBBBBBBBBBBBBBBA

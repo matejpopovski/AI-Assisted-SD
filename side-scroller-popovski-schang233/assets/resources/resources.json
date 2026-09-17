@@ -1,0 +1,277 @@
+{
+    "sprites": {
+        "caveman": {
+            "type": "Grub",
+            "left": [
+                {"sheet":"caveman", "rows":4, "cols":4, "duration":150}
+            ],
+            "right": [
+                {"sheet":"caveman", "operators":["mirror"], "rows":4, "cols":4, "duration":150}
+            ],
+            "deadRight": [
+                {"sheet":"caveman", "operators":["flip"], "rows":4, "cols":4, "duration":150}
+            ],
+            "deadLeft": [
+                {"sheet":"caveman", "operators":["flip","mirror"], "rows":4, "cols":4, "duration":150}
+            ]
+        },
+        "player": {
+            "type": "Player",
+            "left": [
+                {"img":"player1", "duration":250},
+                {"img":"player2", "duration":150},
+                {"img":"player1", "duration":150},
+                {"img":"player2", "duration":150},
+                {"img":"player3", "duration":200},
+                {"img":"player2", "duration":150}
+            ],
+            "right": [
+		        {"img":"player1", "operators":["mirror"], "duration":250},
+		        {"img":"player2", "operators":["mirror"], "duration":150},
+		        {"img":"player1", "operators":["mirror"], "duration":150},
+		        {"img":"player2", "operators":["mirror"], "duration":150},
+		        {"img":"player3", "operators":["mirror"], "duration":200},
+		        {"img":"player2", "operators":["mirror"], "duration":150}
+            ],
+            "deadLeft": [
+                {"img":"player1", "operators":["flip"], "duration":250},
+                {"img":"player2", "operators":["flip"], "duration":150},
+                {"img":"player1", "operators":["flip"], "duration":150},
+                {"img":"player2", "operators":["flip"], "duration":150},
+                {"img":"player3", "operators":["flip"], "duration":200},
+                {"img":"player2", "operators":["flip"], "duration":150}
+            ],
+            "deadRight": [
+		        {"img":"player1", "operators":["mirror","flip"], "duration":250},
+		        {"img":"player2", "operators":["mirror","flip"], "duration":150},
+		        {"img":"player1", "operators":["mirror","flip"], "duration":150},
+		        {"img":"player2", "operators":["mirror","flip"], "duration":150},
+		        {"img":"player3", "operators":["mirror","flip"], "duration":200},
+		        {"img":"player2", "operators":["mirror","flip"], "duration":150}
+            ]
+        },
+        "music": {
+            "type": "GoldenShield",
+            "default": [
+                {
+                    "img": "shield",
+                    "duration": 150
+                }
+            ]
+        },
+        "fly": {
+            "type": "Fly",
+            "left": [
+                {"img":"fly1", "duration":150},
+                {"img":"fly2", "duration":150},
+                {"img":"fly3", "duration":150}
+            ],
+            "right": [
+                {"img":"fly1", "operators":["mirror"], "duration":150},
+                {"img":"fly2", "operators":["mirror"], "duration":150},
+                {"img":"fly3", "operators":["mirror"], "duration":150}
+            ],
+            "deadLeft": [
+                {"img":"fly1", "operators":["flip"], "duration":150},
+                {"img":"fly2", "operators":["flip"], "duration":150},
+                {"img":"fly3", "operators":["flip"], "duration":150}
+            ],
+            "deadRight": [
+                {"img":"fly1", "operators":["mirror","flip"], "duration":150},
+                {"img":"fly2", "operators":["mirror","flip"], "duration":150},
+                {"img":"fly3", "operators":["mirror","flip"], "duration":150}
+            ]
+        },
+        "powerup": {
+            "type": "WingedBoots",
+            "default": [
+                {
+                    "img": "boots",
+                    "duration": 150
+                }
+            ]
+        },
+        "heart": {
+            "type": "Heart",
+            "default": [
+                {
+                    "img": "teleport_array_from_heart_1",
+                    "duration": 150
+                },
+                {
+                    "img": "teleport_array_from_heart_2",
+                    "duration": 150
+                },
+                {
+                    "img": "teleport_array_from_heart_3",
+                    "duration": 150
+                }
+            ]
+        },
+        "grub": {
+            "type": "Grub",
+            "left": [
+                {"img":"grub1", "duration":150},
+                {"img":"grub2", "duration":150}
+            ],
+            "right": [
+                {"img":"grub1", "operators":["mirror"], "duration":150},
+                {"img":"grub2" , "operators":["mirror"], "duration":150}
+            ],
+            "deadLeft": [
+                {"img":"grub1", "operators":["flip"], "duration":150},
+                {"img":"grub2", "operators":["flip"], "duration":150}
+            ],
+            "deadRight": [
+                {"img":"grub1", "operators":["mirror","flip"], "duration":150},
+                {"img":"grub2" , "operators":["mirror","flip"], "duration":150}
+            ]
+        },
+        "star": {
+            "type": "Star",
+            "default": [
+                {
+                    "img": "copper_coin_1",
+                    "duration": 150
+                },
+                {
+                    "img": "copper_coin_2",
+                    "duration": 150
+                },
+                {
+                    "img": "copper_coin_3",
+                    "duration": 150
+                },
+                {
+                    "img": "copper_coin_4",
+                    "duration": 150
+                }
+            ]
+        },
+        "silver": {
+            "type": "Silver",
+            "default": [
+                {
+                    "img": "silver_sycee_1",
+                    "duration": 150
+                },
+                {
+                    "img": "silver_sycee_2",
+                    "duration": 150
+                },
+                {
+                    "img": "silver_sycee_3",
+                    "duration": 150
+                },
+                {
+                    "img": "silver_sycee_4",
+                    "duration": 150
+                }
+            ]
+        },
+        "gold": {
+            "type": "Gold",
+            "default": [
+                {
+                    "img": "gold_sycee_1",
+                    "duration": 150
+                },
+                {
+                    "img": "gold_sycee_2",
+                    "duration": 150
+                },
+                {
+                    "img": "gold_sycee_3",
+                    "duration": 150
+                },
+                {
+                    "img": "gold_sycee_4",
+                    "duration": 150
+                }
+            ]
+        },
+        "arrival": {
+            "type": "Arrival",
+            "default": [
+                {
+                    "img": "teleport_array_from_heart_1",
+                    "duration": 150
+                },
+                {
+                    "img": "teleport_array_from_heart_2",
+                    "duration": 150
+                },
+                {
+                    "img": "teleport_array_from_heart_3",
+                    "duration": 150
+                }
+            ]
+        },
+        "shield": {
+            "type": "GoldenShield",
+            "default": [
+                {
+                    "img": "shield",
+                    "duration": 150
+                }
+            ]
+        },
+        "boss": {
+            "type": "Haaaa",
+            "default": [
+                {
+                    "img": "boss",
+                    "duration": 150
+                }
+            ]
+        },
+        "trophy": {
+            "type": "Trophy",
+            "default": [
+                {
+                    "img": "trophy",
+                    "duration": 150
+                }
+            ]
+        }
+    },
+    "images": {
+        "bg1": "bg1",
+        "bg2": "bg2",
+        "A": "tile_A",
+        "B": "tile_B",
+        "C": "tile_C",
+        "D": "tile_D",
+        "E": "tile_E",
+        "F": "tile_F",
+        "G": "tile_G",
+        "H": "tile_H",
+        "I": "tile_I",
+        "bg3": "bg3"
+    },
+    "sounds": {},
+    "maps": {
+        "TILE_SIZE": 64,
+        "mappings": {
+            "o": "star",
+            "!": "music",
+            "*": "heart",
+            "1": "grub",
+            "2": "fly",
+            "0": "player",
+            "^": "powerup",
+            "-": "caveman",
+            "s": "silver",
+            "g": "gold",
+            "b": "powerup",
+            "v": "shield",
+            "h": "boss",
+            "t": "arrival"
+        },
+        "levels": [
+            "map1",
+            "map2",
+            "map3"
+        ]
+    }
+}

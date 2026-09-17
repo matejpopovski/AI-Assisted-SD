@@ -1,0 +1,8 @@
+# Python dependencies for lecture coding projects
+# Install with: pip install -r requirements.txt
+
+anthropic
+ipython
+numpy
+pytest
+transformers

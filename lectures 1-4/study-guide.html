@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CS639 Study Guide — Lectures 1-4</title>
+<style>
+  @page { size: letter; margin: 0.25in 0.28in; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7.1pt;
+    line-height: 1.13;
+    color: #111;
+    margin: 0;
+  }
+  h1.doctitle { font-size: 12pt; margin: 0 0 1px 0; color: #C5050C; }
+  .subtitle { font-size: 7pt; color: #555; margin-bottom: 3px; }
+
+  .cols { column-count: 3; column-gap: 11px; column-rule: 1px solid #eee; }
+
+  h2.lec {
+    font-size: 8.4pt;
+    background: #C5050C;
+    color: #fff;
+    padding: 1px 4px;
+    margin: 3px 0 2px 0;
+    border-radius: 2px;
+    break-after: avoid;
+    break-inside: avoid;
+  }
+  h3 {
+    font-size: 7.4pt;
+    color: #C5050C;
+    border-bottom: 1px solid #C5050C;
+    margin: 2.5px 0 0.5px 0;
+    padding-bottom: 0px;
+    break-after: avoid;
+  }
+  p { margin: 1px 0; }
+  ul, ol { margin: 0.5px 0 1.5px 0; padding-left: 10px; }
+  li { margin: 0; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1px 0 2px 0;
+    font-size: 6.6pt;
+    break-inside: avoid;
+  }
+  th, td { border: 1px solid #ccc; padding: 0px 2px; text-align: left; vertical-align: top; }
+  th { background: #f1e2e0; }
+  code {
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 6.4pt;
+    background: #f0f0f0;
+    padding: 0 1px;
+    border-radius: 1px;
+  }
+  pre.code {
+    background: #f4f4f4;
+    border-left: 2px solid #C5050C;
+    padding: 1.5px 3px;
+    margin: 1px 0 2px 0;
+    white-space: pre-wrap;
+    font-size: 6.2pt;
+    line-height: 1.08;
+    break-inside: avoid;
+  }
+  .box {
+    border: 1px solid #C5050C;
+    border-radius: 2px;
+    padding: 1.5px 4px;
+    margin: 1.5px 0;
+    background: #fff8f7;
+    break-inside: avoid;
+  }
+  .box b { color: #C5050C; }
+  .blk { break-inside: avoid; margin-bottom: 2px; }
+  strong { color: #222; }
+</style>
+</head>
+<body>
+
+<h1 class="doctitle">CS639 — AI-Assisted Software Development</h1>
+<div class="subtitle">Study Guide · Lectures 1–4 · condensed for print review</div>
+
+<div class="cols">
+
+<h2 class="lec">Lecture 1 — Course Introduction &amp; Claude Code</h2>
+
+<div class="blk">
+<h3>Course &amp; Grading</h3>
+<p><strong>3 units:</strong> U1 AI-Assisted Dev (wk1–5) · U2 Smart Applications/APIs·RAG·agents (wk6–10) · U3 Security/Ethics/Harness Eng (wk11–15). Tue/Thu 75-min, flipped classroom. 5 projects (brownfield P1–P4 + greenfield Final), all via GitLab+CI/CD, auto-graded.</p>
+<table><tr><th>Grade</th><th>Wt</th></tr>
+<tr><td>Projects</td><td>54%</td></tr><tr><td>Exams (3×10%)</td><td>30%</td></tr>
+<tr><td>Participation</td><td>8%</td></tr><tr><td>Quizzes</td><td>7%</td></tr><tr><td>Surveys</td><td>1%</td></tr></table>
+<p style="font-size:6.9pt">Drops lowest 5 quiz + 5 activity scores.</p>
+<table><tr><th>Project</th><th>Due</th></tr>
+<tr><td>P1 Side-Scroller (8%)</td><td>Sep 15</td></tr>
+<tr><td>P2 Full-Stack Quiz (11%)</td><td>Oct 6</td></tr>
+<tr><td>P3 RAG Q&amp;A App (11%)</td><td>Oct 27</td></tr>
+<tr><td>P4 AI Review Agent (11%)</td><td>Nov 17</td></tr>
+<tr><td>Final Project (13%)</td><td>Dec 8</td></tr></table>
+<p>Exams: Midterm1 Oct14 eve (U1) · Midterm2 Nov18 eve (U2) · Final Dec11 5:05–7:05pm (U3). Written, closed-book, <strong>closed-AI</strong>, one 8.5"×11" note sheet.</p>
+</div>
+
+<div class="blk box"><b>AI Policy:</b> encouraged — write/debug/refactor/test/explain w/ Claude, iterate on output; other AI tools OK but must be shared manually (Claude Code auto-logs). Not allowed — submitting work you can't explain, letting AI decide unsupervised, AI on quizzes/exams (misconduct).</div>
+
+<div class="blk">
+<h3>Tech Stack</h3>
+<p>Frontend TS+React · Backend Python+FastAPI · DB MySQL+Redis · Docker+Compose · Git/GitLab · GitLab CI/CD · Claude Code (CLI/VS Code/App).</p>
+</div>
+
+<div class="blk">
+<h3>Claude vs. Claude Code</h3>
+<p><strong>Claude</strong> = vision-language model (brain), no file access alone. <strong>Claude Code</strong> = harness (eyes/hands) wrapping it in an agentic loop: explores, edits, runs, self-checks.</p>
+<table><tr><th>Weakness</th><th>You do</th></tr>
+<tr><td>Ambiguity</td><td>State goals/constraints</td></tr>
+<tr><td>Correctness</td><td>Run/test/read diff</td></tr>
+<tr><td>Design drift</td><td>Own architecture</td></tr>
+<tr><td>Self-awareness</td><td>Diagnose/redirect</td></tr>
+<tr><td>Higher-order</td><td>Bring judgment</td></tr></table>
+<p><strong>3 interfaces:</strong> CLI (simplicity) · VS Code (codebase feedback) · App (worktrees/multi-agent/scheduled) — same harness.</p>
+<p><code>@filename</code> for context, <code>/help</code> for commands. <strong>Always read the diff before accepting.</strong> Verify extra when: unfamiliar API, change &gt;few lines, "best way" unexplained, tests pass but you don't know why.</p>
+</div>
+
+<div class="blk">
+<h3>Git Essentials</h3>
+<pre class="code">git clone &lt;url&gt;
+git checkout -b feature/x
+git add &lt;file&gt; && git commit -m "Fix Y"
+git push -u origin feature/x</pre>
+<p>Messages describe the change, not your actions. <strong>Local merge</strong> (unprotected main): checkout main → merge feature → push. <strong>MR</strong> (protected main): push → open MR → teammate approves (not you) → CI green → merge. <strong>Fork sync:</strong> <code>git fetch upstream && git merge upstream/main</code>.</p>
+<div class="box"><b>Gotcha:</b> Claude Code loads <code>.claude/settings.json</code>/<code>rules/</code>/<code>skills/</code> only from the exact launch folder — open each lecture/project folder directly, never the repo root.</div>
+</div>
+
+<h2 class="lec">Lecture 2 — Claude Code in Practice</h2>
+
+<div class="blk">
+<h3>Java → TS &amp; p5.js</h3>
+<p>Same OOP concepts (classes/interfaces/access modifiers), syntax differs. p5.js: <code>setup()</code> runs once (createCanvas), <code>draw()</code> runs ~60x/sec (input→update→render) — same shape as Java's init()+loop.</p>
+</div>
+
+<div class="blk">
+<h3>Commands</h3>
+<p><code>/help</code> commands · <code>@file</code> context · <code>/compact</code> shrink session · <code>/clear</code> fresh session · <code>/context</code> window usage · <code>/usage</code> tokens/plan.</p>
+</div>
+
+<div class="blk">
+<h3>Reviewing Edits &amp; Bash</h3>
+<p>Claude proposes a diff first — check: expected files only? matches ask? smaller way? <strong>Never blind-Accept.</strong> Claude can run terminal commands with approval (most modes) — good for driving the local loop ("run tests, tell me what fails").</p>
+</div>
+
+<div class="blk box"><b>Unfamiliar codebase:</b> ask before touching ("overview this") → trace behavior ("what happens in one frame?") → ask about anything strange → then propose change &amp; iterate.</div>
+
+<div class="blk">
+<h3>AAA Testing</h3>
+<pre class="code">function formatScore(s:number){ return s.toString().padStart(4,"0") }
+// formatScore(7) -> "0007"
+describe("formatScore", () => {
+  it("pads to 4 digits", () => expect(formatScore(7)).toBe("0007"));
+});</pre>
+</div>
+
+<div class="blk box"><b>Local dev loop:</b> <code>npm run test</code> (vitest, must pass) → <code>format</code> (prettier auto-fix) → <code>lint</code> (eslint, fix errors) → commit → push. Same checks CI runs — catch failures in seconds, not a push/wait/fix round trip.</div>
+
+<h2 class="lec">Lecture 3 — Brownfield Development</h2>
+
+<div class="blk">
+<h3>Two Memory Systems</h3>
+<table><tr><th></th><th>CLAUDE.md</th><th>Auto memory</th></tr>
+<tr><td>Writer</td><td>You</td><td>Claude</td></tr>
+<tr><td>Has</td><td>Instructions/rules</td><td>Learnings/patterns</td></tr></table>
+<p>Both via <code>/memory</code>. Scopes broad→specific: Managed policy (IT) → User <code>~/.claude/CLAUDE.md</code> → Project <code>./CLAUDE.md</code> (team, git) → Local <code>./CLAUDE.local.md</code> (gitignored). Nested CLAUDE.md loads on-demand per subdir. Auto memory: <code>~/.claude/projects/&lt;proj&gt;/memory/</code>.</p>
+<p>Auto-loads every session: CLAUDE.md, CLAUDE.local.md, auto memory, <code>.claude/rules/*.md</code>, settings.json. <strong>Doesn't:</strong> root RULES.md/SPEC.md — needs <code>See @SPEC.md for...</code> in CLAUDE.md to count. <code>/context</code>: prompt+memory+skills &lt;3% combined; Messages = only non-auto-loaded, largest, category.</p>
+</div>
+
+<div class="blk">
+<h3>Rules &amp; Skills</h3>
+<pre class="code">---
+paths: ["src/**/*.ts"]
+---
+# create tests for modified functions</pre>
+<p>No <code>paths:</code> → loads every session. Scoped → only when matching file touched. <strong>Skill</strong> = <code>.claude/skills/&lt;name&gt;/SKILL.md</code>, auto-invoked or via <code>/name</code>. <code>/init</code> drafts a starter CLAUDE.md; <code>/help</code> beats stale docs.</p>
+</div>
+
+<div class="blk">
+<h3>settings.json</h3>
+<p>Scopes: User <code>~/.claude/settings.json</code> (all projects) → Project <code>.claude/settings.json</code> (team, git) → Local <code>.claude/settings.local.json</code> (gitignored) — most specific wins. <strong>Permissions:</strong> allow(silent)/ask(prompt)/deny(refuse), e.g. <code>"Bash(npm run test *)"</code>. <strong>env:</strong> auto-injects vars every session.</p>
+</div>
+
+<div class="blk box"><b>Hooks = enforcement</b> (vs. CLAUDE.md/rules = context, no guarantee). A hook runs on a tool event regardless, can block: e.g. PostToolUse on Edit|Write → run <code>npm run format</code>, no opt-out. If it must happen every time → hook, not an instruction.</div>
+
+<div class="blk">
+<h3>Merge Conflicts</h3>
+<pre class="code">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+export const X = 1200;
+=======
+export const X = 600;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-name</pre>
+<p>Happens when both branches touch the same lines. Above <code>===</code>=yours, below=incoming. Pick/combine/rewrite, remove markers.</p>
+<div class="box"><b>Never rebase a graded repo:</b> <code>git rebase</code>/<code>git pull --rebase</code> delete merge commits graders check for. Safe: plain <code>git merge</code>/<code>git pull</code>. GitLab "Update fork" already merges safely.</div>
+</div>
+
+<h2 class="lec">Lecture 4 — Elephant-Goldfish Model (EGM)</h2>
+
+<div class="blk">
+<h3>Why a Process</h3>
+<p>No-process assistant = <strong>elephant with amnesia</strong>: huge capability, no cross-session memory, no sense of "done." Failure modes: <strong>over-ambition</strong> (runs out of context) / <strong>premature victory</strong> (declares done early). Fix: Elephant forgets → build durable external memory. Goldfish (fresh context remembers nothing) → use that blankness as a <em>test</em>.</p>
+</div>
+
+<div class="blk">
+<h3>Four Phases</h3>
+<p>(0) <strong>Context hierarchy</strong> (prereq, build once/refresh) → (1) <strong>Growing the Elephant</strong> (load context, discuss design, <em>no code</em>) → (2) <strong>Teaching the Elephant</strong> (write SPEC.md) → (3) <strong>Goldfish Protocol</strong> (test doc, fresh/context-free session) → (4) <strong>Implementation</strong> (build, then mean-review).</p>
+</div>
+
+<div class="blk">
+<h3>Permission Modes (Shift+Tab)</h3>
+<table><tr><th>Mode</th><th>Runs unasked</th></tr>
+<tr><td>Auto (default)</td><td>Everything — classifier reviews</td></tr>
+<tr><td>Manual</td><td>Nothing — OK each time</td></tr>
+<tr><td>Accept Edits</td><td>Edits auto-apply, check diff after</td></tr>
+<tr><td>Plan</td><td>Reads only, no edits till approved</td></tr></table>
+<p>Phases 1–3 need explicit <strong>Plan Mode</strong> (<code>/plan</code>) — only mode where Claude is physically blocked from editing. <code>Ctrl+G</code> opens plan in editor → draft SPEC.md.</p>
+</div>
+
+<div class="blk">
+<h3>P1 Growing the Elephant</h3>
+<p>Load context → No Code Rule → first draft in prose. <strong>Sycophant Challenge</strong> (push back on Claude's own proposal): "What could go wrong?" / "What edge cases are missing?" / "Simpler way?"</p>
+</div>
+
+<div class="blk">
+<h3>Context Hierarchy</h3>
+<p>Recursive summarization, <strong>leaves→root</strong>, as nested CLAUDE.md (not README, so it auto-loads): summarize deepest dirs first → verify → one level up, summarize the summaries (not raw source) → repeat to root. Sync via a <code>.claude/rules/</code> entry. Same trick as reading docs instead of a whole library's source.</p>
+</div>
+
+<div class="blk">
+<h3>P2 Teaching the Elephant</h3>
+<p>SPEC.md sections: <strong>Problem</strong> (1-2 sentences) · <strong>Technical Plan</strong> · <strong>Alternatives</strong> (+why they lost) · <strong>Detailed Implementation</strong>. One file per feature in <code>docs/plans/</code>. Test: could someone with zero context implement from the doc alone?</p>
+</div>
+
+<div class="blk">
+<h3>P3 Goldfish Protocol</h3>
+<p>Feed spec+hierarchy to a brand-new session (<code>/clear</code>), never the discussion that made them. Checks: comprehension (explains it back?) · critic (what holes?) · readiness (knows exactly what to build?). Gaps → revise spec <em>before</em> implementing. Stay in Plan Mode.</p>
+</div>
+
+<div class="blk">
+<h3>P4 Implementation &amp; Beyond</h3>
+<p>Only now write code, against the goldfish-tested spec; verify against tests as you go. <strong>Mean review:</strong> have Claude tear apart its own "done" work — critical posture catches what generation doesn't. From P2 on: context hierarchy is self-written bottom-up; same design+SPEC+fresh-test; implementation adds full CI/CD.</p>
+</div>
+
+</div>
+</body>
+</html>

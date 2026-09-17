@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<script src="node_modules/p5/lib/p5.js"></script>
+		<link rel="stylesheet" type="text/css" href="styles.css">
+		<title>Tower Defense Lite — Lecture 3 Practice</title>
+	</head>
+	<body>
+		<script type="module">
+			console.log("********* BEGIN *********");
+			import * as script from "./build/Main.js";
+			window.setup = script.setup;
+			window.draw = script.draw;
+			window.mousePressed = script.mousePressed;
+			// ****************
+			// add any additional hooks between p5 and main.js here
+			// p5.js works on the global scope so any functions
+			// that p5 needs to see must be mapped onto window
+			// ****************
+		</script>
+	</body>
+</html>

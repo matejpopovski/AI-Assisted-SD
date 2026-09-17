@@ -1,0 +1,105 @@
+{
+  "name": "CS Fundamentals",
+  "cards": [
+    {
+      "question": "What is the time complexity of accessing an element by index in a Python list?",
+      "answer": "O(1)",
+      "category": "complexity"
+    },
+    {
+      "question": "What is the time complexity of searching an unsorted list for a specific value?",
+      "answer": "O(n)",
+      "category": "complexity"
+    },
+    {
+      "question": "What is the average-case time complexity of binary search?",
+      "answer": "O(log n)",
+      "category": "complexity"
+    },
+    {
+      "question": "What is the average-case time complexity of merge sort?",
+      "answer": "O(n log n)",
+      "category": "complexity"
+    },
+    {
+      "question": "What is the time complexity of inserting at the head of a singly linked list?",
+      "answer": "O(1)",
+      "category": "complexity"
+    },
+    {
+      "question": "What is the time complexity of inserting at the head of an array (shifting all elements)?",
+      "answer": "O(n)",
+      "category": "complexity"
+    },
+    {
+      "question": "What data structure follows Last-In, First-Out (LIFO) ordering?",
+      "answer": "stack",
+      "category": "data-structures"
+    },
+    {
+      "question": "What data structure follows First-In, First-Out (FIFO) ordering?",
+      "answer": "queue",
+      "category": "data-structures"
+    },
+    {
+      "question": "In a singly linked list, what does each node store besides its value?",
+      "answer": "a pointer to the next node",
+      "category": "data-structures"
+    },
+    {
+      "question": "What is the main advantage of a linked list over an array for insertion and deletion?",
+      "answer": "no shifting of elements required",
+      "category": "data-structures"
+    },
+    {
+      "question": "What is the main advantage of an array over a linked list for element access?",
+      "answer": "O(1) random access by index",
+      "category": "data-structures"
+    },
+    {
+      "question": "What Python keyword is used to define a function?",
+      "answer": "def",
+      "category": "python"
+    },
+    {
+      "question": "What Python built-in type maps keys to values?",
+      "answer": "dict",
+      "category": "python"
+    },
+    {
+      "question": "In Python, what does the 'self' parameter in a class method refer to?",
+      "answer": "the instance of the class",
+      "category": "python"
+    },
+    {
+      "question": "What Python keyword is used to define a class?",
+      "answer": "class",
+      "category": "python"
+    },
+    {
+      "question": "In Python, does assigning a list to a new variable copy the list or share a reference?",
+      "answer": "share a reference",
+      "category": "python"
+    },
+    {
+      "question": "What does OOP stand for?",
+      "answer": "object-oriented programming",
+      "category": "concepts"
+    },
+    {
+      "question": "What OOP concept allows a class to inherit attributes and methods from another class?",
+      "answer": "inheritance",
+      "category": "concepts"
+    },
+    {
+      "question": "What term describes hiding internal implementation details and exposing only a public interface?",
+      "answer": "encapsulation",
+      "category": "concepts"
+    },
+    {
+      "question": "What does DRY stand for in software development?",
+      "answer": "Don't Repeat Yourself",
+      "category": "concepts"
+    }
+  ]
+}
