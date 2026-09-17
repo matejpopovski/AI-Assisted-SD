@@ -2,21 +2,38 @@ from __future__ import annotations
 
 from typing import Annotated
 
+import bleach
 import structlog
-from fastapi import APIRouter, Depends
-from fastapi.responses import StreamingResponse
+from fastapi import APIRouter, Depends, File, Query, UploadFile
+from fastapi.responses import Response, StreamingResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..common.dependencies import get_current_user, require_user
-from ..common.exceptions import NotFoundError
+from ..common.dependencies import (
+    get_current_user,
+    require_course_host,
+    require_game_host,
+    require_user,
+)
+from ..common.exceptions import ConflictError, NotFoundError
 from ..config import settings
 from ..database import get_db
-from ..models.course import Course, UserCourseAccess
+from ..models.course import Course, CourseRoster, UserCourseAccess
 from ..models.game import Game, Question, UserGameAccess
 from ..models.session import GameSession
 from ..models.user import User
 from ..redis_client import get_redis
+from ..schemas.admin import (
+    GameCreate,
+    GameResponse,
+    QuestionCreate,
+    QuestionReorder,
+    QuestionResponse,
+    QuestionUpdate,
+    RosterEntryPatch,
+    RosterEntryResponse,
+    RosterUploadResult,
+)
 from ..schemas.game import (
     ActiveSessionItem,
     MyCourseItem,
@@ -27,6 +44,10 @@ from ..schemas.game import (
 )
 from ..services import game_service
 from ..services import state_service as state
+from ..services.report_service import build_session_report
+from ..services.roster_service import process_roster_csv
+
+_PROMPT_TAGS = ["b", "i", "br", "u"]
 
 router = APIRouter(prefix="/game", tags=["game"])
 logger = structlog.get_logger()
