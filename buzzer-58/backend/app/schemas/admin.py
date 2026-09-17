@@ -110,6 +110,17 @@ class GameResponse(BaseModel):
     created_at: datetime
 
 
+class GameImportMeta(BaseModel):
+    """Like GameCreate but without course_id — the buzzer/game JSON file format is
+    course-agnostic (see README.md); the importing course is chosen at import time,
+    not carried in the file. See docs/plans/host-admin-restructuring.md."""
+
+    model_config = ConfigDict(extra="ignore")
+    title: str = Field(..., min_length=1, max_length=255)
+    description: str = Field("", max_length=5000)
+    max_players: int = Field(150, ge=1, le=500)
+
+
 # ---------------------------------------------------------------------------
 # Questions
 # ---------------------------------------------------------------------------

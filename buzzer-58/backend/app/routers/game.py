@@ -77,19 +77,31 @@ async def my_games(
 ) -> list[Game]:
     """
     Returns games the authenticated user can run.
-    ADMIN sees all games; USER sees games from user_game_access.
+    ADMIN sees all games; USER sees the union of games from an explicit
+    user_game_access grant and games whose own course they HOST (see
+    docs/plans/host-admin-restructuring.md).
     """
     if user.role == "ADMIN":
         result = await db.execute(select(Game).order_by(Game.title))
         return result.scalars().all()
 
-    result = await db.execute(
+    via_game_access = await db.execute(
         select(Game)
         .join(UserGameAccess, UserGameAccess.game_id == Game.id)
         .where(UserGameAccess.user_id == user.id)
-        .order_by(Game.title)
     )
-    return result.scalars().all()
+    via_course_host = await db.execute(
+        select(Game)
+        .join(UserCourseAccess, UserCourseAccess.course_id == Game.course_id)
+        .where(
+            UserCourseAccess.user_id == user.id,
+            UserCourseAccess.role == "HOST",
+        )
+    )
+    by_id = {g.id: g for g in via_game_access.scalars().all()}
+    for g in via_course_host.scalars().all():
+        by_id[g.id] = g
+    return sorted(by_id.values(), key=lambda g: g.title)
 
 
 @router.get("/my-active-sessions", response_model=list[ActiveSessionItem])

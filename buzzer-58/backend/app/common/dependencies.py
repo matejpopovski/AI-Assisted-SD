@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ..common.exceptions import ForbiddenError, UnauthorizedError
 from ..database import get_db
 from ..models.user import User
+from ..services import game_service
 from ..services.auth_service import decode_token, get_user_by_id
 
 logger = structlog.get_logger()
@@ -63,6 +64,31 @@ async def require_user(
     """Allow ADMIN and USER roles; reject GUEST."""
     if user.role == "GUEST":
         raise ForbiddenError("Authenticated account required")
+    return user
+
+
+async def require_course_host(
+    course_id: int,
+    user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> User:
+    """Admin, or a host (UserCourseAccess role=HOST) of this specific course.
+    Thin wrapper around game_service.assert_host_can_use_course — the same check
+    create_room already uses, not a parallel permission system. See
+    docs/plans/host-admin-restructuring.md."""
+    await game_service.assert_host_can_use_course(db, user, course_id)
+    return user
+
+
+async def require_game_host(
+    game_id: int,
+    user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> User:
+    """Admin, or a host of this specific game (via UserGameAccess or HOST access
+    to the game's own course). Thin wrapper around
+    game_service.assert_host_can_use_game."""
+    await game_service.assert_host_can_use_game(db, user, game_id)
     return user
 
 

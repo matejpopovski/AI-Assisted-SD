@@ -202,6 +202,32 @@ Order of work (each a separate, atomic commit per T1):
     **cannot** touch another host's course; a room can't be created with a
     course_id/game_id that don't match once a game has a `course_id` set.
 
+## Addendum (found during implementation)
+
+`routers/admin.py`'s `import_game` builds `GameCreate(**game_data)` directly from the
+uploaded JSON's `"game"` object — and the documented `buzzer/game` JSON format (README.md) has
+no `course_id` field; neither does any existing file in `sample_games/`. Making
+`GameCreate.course_id` required (as planned above) would make every existing sample-game
+import start failing `422`, which directly contradicts instructions.md's requirement that
+"importing unmodified version-1 files must keep working."
+
+Also: the widened `assert_host_can_use_game` now checks the game exists *before* branching on
+admin/non-admin (the original only did this for admins), so a non-admin hitting a genuinely
+nonexistent `game_id` now gets `404 NotFoundError` instead of `403 ForbiddenError` — a small,
+deliberate improvement (clearer error for a case that isn't really "forbidden," it's "doesn't
+exist"), confirmed to not be asserted on by any existing test.
+
+Fix: `import_game` does **not** construct a `GameCreate` from the file's `"game"` object
+anymore. It reads `title`/`description`/`max_players` from the parsed JSON with the same
+manual validation shape `GameCreate` used to provide (missing/invalid `title` → `422`), and
+takes `course_id` as a **new required query parameter on the import endpoint itself**
+(`?course_id=123`) — since the file format is course-agnostic by design (a game file should be
+importable into whichever course the importer chooses), the course choice belongs to the
+*import action*, not the file's contents. Both `admin.py`'s and the new host-facing import path
+(if added) take this same `course_id` query param. `export_game` is unaffected — it doesn't
+include `course_id` in the exported bundle, preserving the existing, already-documented file
+format exactly.
+
 ## Edge cases this doc covers
 
 - A pre-migration game with `course_id IS NULL` — `create_room`'s mismatch check no-ops

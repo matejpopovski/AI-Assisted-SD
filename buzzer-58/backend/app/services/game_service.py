@@ -68,11 +68,17 @@ async def assert_host_can_use_course(
 
 
 async def assert_host_can_use_game(db: AsyncSession, user: User, game_id: int) -> None:
-    """Admin can use any game; USER must have an entry in user_game_access."""
+    """Admin can use any game. A non-admin qualifies via either path:
+    an explicit UserGameAccess grant (predates course-specific games, kept for
+    backward compatibility), or HOST access to the game's own course (the normal
+    path for a host managing/running a game they created for their own course).
+    See docs/plans/host-admin-restructuring.md.
+    """
+    game = await db.get(Game, game_id)
+    if not game:
+        raise NotFoundError(f"Game {game_id} not found")
+
     if user.role == "ADMIN":
-        game = await db.get(Game, game_id)
-        if not game:
-            raise NotFoundError(f"Game {game_id} not found")
         return
 
     result = await db.execute(
@@ -81,8 +87,21 @@ async def assert_host_can_use_game(db: AsyncSession, user: User, game_id: int) -
             UserGameAccess.game_id == game_id,
         )
     )
-    if not result.scalar_one_or_none():
-        raise ForbiddenError("You do not have access to this game")
+    if result.scalar_one_or_none():
+        return
+
+    if game.course_id is not None:
+        course_result = await db.execute(
+            select(UserCourseAccess).where(
+                UserCourseAccess.user_id == user.id,
+                UserCourseAccess.course_id == game.course_id,
+                UserCourseAccess.role == "HOST",
+            )
+        )
+        if course_result.scalar_one_or_none():
+            return
+
+    raise ForbiddenError("You do not have access to this game")
 
 
 # ---------------------------------------------------------------------------
@@ -102,6 +121,20 @@ async def create_room(
     await assert_host_can_use_course(db, host, course_id)
     await assert_host_can_use_game(db, host, game_id)
 
+    # A game with an assigned course_id can only be run within that course — a
+    # pre-migration game with no course_id (None) keeps the old unconstrained
+    # behavior. See docs/plans/host-admin-restructuring.md.
+    game_for_course_check = await db.get(Game, game_id)
+    if (
+        game_for_course_check is not None
+        and game_for_course_check.course_id is not None
+        and game_for_course_check.course_id != course_id
+    ):
+        raise ConflictError(
+            f"Game {game_id} belongs to course {game_for_course_check.course_id}, "
+            f"not course {course_id}"
+        )
+
     # Enforce global room limit — count only LOBBY/IN_PROGRESS rooms.
     # COMPLETED/ABANDONED rooms may linger in Redis briefly for reconnection
     # but do not consume a concurrent-room slot.
@@ -120,7 +153,6 @@ async def create_room(
     if room_count >= max_rooms:
         raise ConflictError(f"Maximum of {max_rooms} concurrent rooms reached")
 
-    await db.get(Game, game_id)
     room_code = await generate_room_code(redis)
 
     session = GameSession(

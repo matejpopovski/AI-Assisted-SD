@@ -27,6 +27,7 @@ from ..schemas.admin import (
     CourseUpdate,
     GameAccessGrant,
     GameCreate,
+    GameImportMeta,
     GameResponse,
     GameUpdate,
     QuestionCreate,
@@ -219,8 +220,14 @@ async def create_game(
     _: Annotated[User, Depends(require_admin)],
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> Game:
+    course = await db.get(Course, body.course_id)
+    if not course:
+        raise NotFoundError(f"Course {body.course_id} not found")
     game = Game(
-        title=body.title, description=body.description, max_players=body.max_players
+        title=body.title,
+        description=body.description,
+        max_players=body.max_players,
+        course_id=body.course_id,
     )
     db.add(game)
     await db.flush()
@@ -484,9 +491,14 @@ async def export_game(
 @router.post("/games/import", status_code=201)
 async def import_game(
     file: Annotated[UploadFile, File(description="buzzer/game JSON bundle")],
+    course_id: Annotated[int, Query(description="Course to attach the imported game to")],
     _: Annotated[User, Depends(require_admin)],
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> dict:
+    course = await db.get(Course, course_id)
+    if not course:
+        raise NotFoundError(f"Course {course_id} not found")
+
     raw = await file.read()
     try:
         bundle = json.loads(raw)
@@ -502,9 +514,11 @@ async def import_game(
             detail=f"Unsupported version {version!r}; server supports version {_SUPPORTED_IMPORT_VERSION}",
         )
 
+    # Note: GameImportMeta, not GameCreate — the buzzer/game file format is
+    # course-agnostic; course_id comes from the query param above, not the file.
     game_data = bundle.get("game", {})
     try:
-        game_meta = GameCreate(**game_data)
+        game_meta = GameImportMeta(**game_data)
     except Exception as exc:
         raise HTTPException(
             status_code=422, detail=f"Invalid game metadata: {exc}"
@@ -524,6 +538,7 @@ async def import_game(
         title=game_meta.title,
         description=game_meta.description,
         max_players=game_meta.max_players,
+        course_id=course_id,
     )
     db.add(game)
     await db.flush()
