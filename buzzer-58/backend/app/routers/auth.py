@@ -112,7 +112,9 @@ async def oauth2_callback(
     email = request.headers.get("X-Auth-Request-Email")
 
     if not netid:
-        logger.error("oauth2_callback_no_netid", headers=dict(request.headers))
+        logger.error(
+            "oauth2_callback_no_netid", header_names=sorted(request.headers.keys())
+        )
         return HTMLResponse(
             _redirect_html(
                 dest_url,

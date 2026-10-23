@@ -13,6 +13,20 @@ from ..models.game import Question
 from ..models.session import GameSession, SessionScore
 from ..models.user import User
 
+_FORMULA_PREFIXES = ("=", "+", "-", "@", "\t", "\r")
+
+
+def _csv_safe(value):
+    """Stop Excel/Sheets from running a text cell as a formula (CSV injection).
+
+    Guest display names and question prompts are user-controlled, so a value such as
+    =HYPERLINK(...) would otherwise execute when a host opens the export. Numbers are
+    left alone; text that starts with a formula character gets a leading apostrophe.
+    """
+    if isinstance(value, str) and value.startswith(_FORMULA_PREFIXES):
+        return "'" + value
+    return value
+
 
 async def build_session_csv(db: AsyncSession, session_id: str) -> tuple[str, bytes]:
     """
@@ -69,7 +83,7 @@ async def build_session_csv(db: AsyncSession, session_id: str) -> tuple[str, byt
     for pid in player_ids:
         row_scores = [score_map[pid].get(q.id, 0) for q in questions]
         total = sum(row_scores)
-        writer.writerow([name_map.get(pid, pid)] + row_scores + [total])
+        writer.writerow([_csv_safe(name_map.get(pid, pid))] + row_scores + [total])
 
     # Filename based on session id (safe for all filesystems)
     filename = f"session_{session_id[:8]}_scores.csv"
@@ -148,14 +162,15 @@ async def build_canvas_csv(
 
     if per_question:
         q_headers = [
-            f"Q{i + 1}: {q.prompt[:50].rstrip()}" for i, q in enumerate(questions)
+            _csv_safe(f"Q{i + 1}: {q.prompt[:50].rstrip()}")
+            for i, q in enumerate(questions)
         ]
         writer.writerow(canvas_base + q_headers)
         writer.writerow(
             ["Points Possible", "", "", "", ""] + [q.points_value for q in questions]
         )
     else:
-        writer.writerow(canvas_base + [title])
+        writer.writerow(canvas_base + [_csv_safe(title)])
         max_score = sum(q.points_value for q in questions)
         writer.writerow(["Points Possible", "", "", "", "", max_score])
 
@@ -177,9 +192,27 @@ async def build_canvas_csv(
         q_scores = [score_map[pid].get(q.id, 0.0) for q in questions]
 
         if per_question:
-            writer.writerow([display, "", "", sis_login(netid), section] + q_scores)
+            writer.writerow(
+                [
+                    _csv_safe(display),
+                    "",
+                    "",
+                    _csv_safe(sis_login(netid)),
+                    _csv_safe(section),
+                ]
+                + q_scores
+            )
         else:
-            writer.writerow([display, "", "", sis_login(netid), section, sum(q_scores)])
+            writer.writerow(
+                [
+                    _csv_safe(display),
+                    "",
+                    "",
+                    _csv_safe(sis_login(netid)),
+                    _csv_safe(section),
+                    sum(q_scores),
+                ]
+            )
 
     safe = "".join(c if c.isalnum() or c in " _-" else "_" for c in title)
     filename = f"canvas_{safe}_{session_id[:8]}.csv"
