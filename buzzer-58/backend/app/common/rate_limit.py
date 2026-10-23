@@ -1,3 +1,4 @@
+import hmac
 import uuid
 
 from slowapi import Limiter
@@ -15,7 +16,8 @@ def _rate_limit_key(request):
     if settings.is_development:
         return str(uuid.uuid4())
     if settings.STRESS_TEST_KEY:
-        if request.headers.get("X-Stress-Key") == settings.STRESS_TEST_KEY:
+        supplied = request.headers.get("X-Stress-Key", "")
+        if hmac.compare_digest(supplied.encode(), settings.STRESS_TEST_KEY.encode()):
             return str(uuid.uuid4())
     return get_remote_address(request)
 
